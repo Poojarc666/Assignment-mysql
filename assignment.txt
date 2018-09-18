@@ -1,0 +1,126 @@
+#To create a database and table
+ sudo mysql
+[sudo] password for sois: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.23-0ubuntu0.18.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| dbname             |
+| mysql              |
+| performance_schema |
+| poojacare          |
+| sys                |
++--------------------+
+6 rows in set (0.04 sec)
+
+mysql> use poojacare;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table physician(id int(10), name varchar(10), password varchar(10));
+Query OK, 0 rows affected (0.18 sec)
+
+
+
+###to create table physician
+insert into physician(id,name,password)value('1','pooja','sois@123');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from physician;
++------+-------+----------+
+| id   | name  | password |
++------+-------+----------+
+|    1 | pooja | sois@123 |
++------+-------+----------+
+1 row in set (0.00 sec)
+
+
+
+#to create a table patients
+ create table patients(idpatient int(10), personalNo int(10), secondName varchar(10),firstName varchar(10), sex varchar(10), dateofbirth int(10), placeofbirth varchar(10), placeofresidence varchar(20), Physician varchar(10),primary key(personalNo),foreign key(physician) references physician(name));
+Query OK, 0 rows affected (0.23 sec)
+
+mysql> insert into patients(idpatient,personalNo,secondName,firstName,sex,dateofbirth,placeofbirth,Physician) value('1','900','ss','Ayan','male','05','mysore','pooja');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from patients;
++-----------+------------+------------+-----------+------+-------------+--------------+------------------+-----------+
+| idpatient | personalNo | secondName | firstName | sex  | dateofbirth | placeofbirth | placeofresidence | Physician |
++-----------+------------+------------+-----------+------+-------------+--------------+------------------+-----------+
+|         1 |        900 | ss         | Ayan      | male |           5 | mysore       | NULL             | pooja     |
++-----------+------------+------------+-----------+------+-------------+--------------+------------------+-----------+
+1 row in set (0.00 sec)
+
+
+
+
+#to create a table bonestage
+
+ create table bonestages(id int(10), name varchar(10), stages varchar(10), primary key(id));
+Query OK, 0 rows affected (0.21 sec)
+
+ insert into bonestages(id, name, stages) values('1', 'ayan','third');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from bonestages;
++----+------+--------+
+| id | name | stages |
++----+------+--------+
+|  1 | ayan | third  |
++----+------+--------+
+1 row in set (0.00 sec)
+
+
+
+
+#to create a table bones
+
+create table bones(id int(10), bone varchar(10), stage varchar(10), text varchar(10));
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> insert into bones(id, bone, stage, text) values('2', 'carnial','second','text');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from bones;
++------+---------+--------+------+
+| id   | bone    | stage  | text |
++------+---------+--------+------+
+|    2 | carnial | second | text |
++------+---------+--------+------+
+1 row in set (0.00 sec)
+
+
+
+
+#to create a table consultations
+
+mysql> create table consultations(idconsultations int(10), personalNo int(10), dateofconsultations varchar(10), weight int(10), height int(10), diagnostic varchar(10), selectedbones varchar(10), realscore int(10), maturityscore int(10), boneage int(10),Physician varchar(10),foreign key(Physician) references physician(name), foreign key(diagnostic) references bones(stage), foreign key(personalNo) references patients(personalNo));
+Query OK, 0 rows affected (0.27 sec)
+
+ insert into consultations values('123', '900','june02','75','5.3','second','legbone','66','75', '23','pooja');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from consultations;
++-----------------+------------+---------------------+--------+--------+------------+---------------+-----------+---------------+---------+-----------+
+| idconsultations | personalNo | dateofconsultations | weight | height | diagnostic | selectedbones | realscore | maturityscore | boneage | Physician |
++-----------------+------------+---------------------+--------+--------+------------+---------------+-----------+---------------+---------+-----------+
+|             123 |        900 | june02              |     75 |      5 | second     | legbone       |        66 |            75 |      23 | pooja     |
++-----------------+------------+---------------------+--------+--------+------------+---------------+-----------+---------------+---------+-----------+
+1 row in set (0.00 sec)
+
+
+
